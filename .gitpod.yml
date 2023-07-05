@@ -1,30 +1,14 @@
-ports:
-- port: 3389
-
 image:
   file: .gitpod.Dockerfile
 
- 
-
 tasks:
-  - init: |
-      echo 'Downloading Miniconda...'
-      wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-      echo 'Making Miniconda installer executable...'
-      chmod +x Miniconda3-latest-Linux-x86_64.sh
-      echo 'Running Miniconda installer...'
-      bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda
-      echo 'Initializing Miniconda...'
-      eval "$($HOME/miniconda/bin/conda shell.bash hook)"
-      conda init
-      echo 'Miniconda installed successfully!'
-  - command: |
-      echo 'Updating Conda...'
-      conda update -n base -c defaults conda
-      echo 'Conda updated successfully!'
-
- 
+  - init: echo 'Updating system packages...' && sudo apt-get update && sudo apt-get upgrade -y && echo 'Updating Python packages...' && pip install --upgrade pip
+    command: echo 'Creating Python environment...' && conda env create -f environment.yml && echo 'Activating Python environment...' && conda activate nlp_demo && echo 'Changing to root directory...' && cd /workspace && echo 'Starting server...' && python3 -m http.server
 
 vscode:
   extensions:
-    - dbaeumer.vscode-eslint@2.1.8:yarn
+    - ms-python.python
+    - ms-toolsai.jupyter
+    - github.vscode-pull-request-github
+    - eamodio.gitlens
+    - ms-azuretools.vscode-docker
