@@ -1,0 +1,30 @@
+ports:
+- port: 3389
+
+image:
+  file: .gitpod.Dockerfile
+
+ 
+
+tasks:
+  - init: |
+      echo 'Downloading Miniconda...'
+      wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+      echo 'Making Miniconda installer executable...'
+      chmod +x Miniconda3-latest-Linux-x86_64.sh
+      echo 'Running Miniconda installer...'
+      bash Miniconda3-latest-Linux-x86_64.sh -b -p $HOME/miniconda
+      echo 'Initializing Miniconda...'
+      eval "$($HOME/miniconda/bin/conda shell.bash hook)"
+      conda init
+      echo 'Miniconda installed successfully!'
+  - command: |
+      echo 'Updating Conda...'
+      conda update -n base -c defaults conda
+      echo 'Conda updated successfully!'
+
+ 
+
+vscode:
+  extensions:
+    - dbaeumer.vscode-eslint@2.1.8:yarn
